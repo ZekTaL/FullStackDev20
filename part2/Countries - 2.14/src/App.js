@@ -23,19 +23,18 @@ const App = () => {
 
   return (
     <div>
-      <h1>Search</h1>
+      <h2>Search</h2>
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h2>Filtered Countries</h2> 
       {
         (countriesList.length >= 10) 
           ? <div>More then 10 matches. Improve your filter!</div>
           : (countriesList.length > 1)
-            ? <CountriesList countriesList={countriesList} />
+            ? <CountriesList countriesList={countriesList} onShowBtnClick={handleFilterChange}/>
             : (countriesList.length === 1)
               ? <Country countriesList={countriesList} />
               : <div>No matches! Try another filter!</div>  
       }
-      {/*CountriesList.length <= 10 ? CountriesList.map(country => <ul key={country.name}>{country.name}</ul>) : <ul>More then 10 matches</ul>*/}
     </div>
   )
 }
