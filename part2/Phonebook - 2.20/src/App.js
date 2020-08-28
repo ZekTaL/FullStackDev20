@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => { 
@@ -10,6 +11,12 @@ const App = () => {
   const [newName, setNewName] = useState('') 
   const [newNumber, setNewNumber] = useState('') 
   const [newFilter, setNewFilter] = useState('') 
+  const [notificationMessage, setNotificationMessage] = useState({message: null, type: null})
+
+  const notificationType = {
+    error: 'error',
+    success: 'success'
+  }
 
   useEffect(() => {     
     personService      
@@ -36,7 +43,8 @@ const App = () => {
       const personToUpdate = persons.find(person => person.name === newName)
       if (personToUpdate.name === personObject.name && personToUpdate.number === personObject.number)
       {
-        window.alert('Error! You are adding a duplicate!')
+        setNotificationMessage({message: 'Error! You are adding a duplicate!', type: notificationType.error})
+        setTimeout(() => {setNotificationMessage({message: null})}, 5000)
         return
       }
 
@@ -46,11 +54,14 @@ const App = () => {
           .update(personToUpdate.id, personObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== personToUpdate.id ? person : returnedPerson))
+            setNotificationMessage({message: `'${personToUpdate.name}' updated!`, type: notificationType.success})
+            setTimeout(() => {setNotificationMessage({message: null})}, 5000)
             setNewName('')
             setNewNumber('')
           })
           .catch(error => {      
-            alert(`the person '${personToUpdate.name}' was already deleted from server`)
+            setNotificationMessage({message: `The person '${personToUpdate.name}' was already deleted from server`, type: notificationType.error})
+            setTimeout(() => {setNotificationMessage({message: null})}, 5000)
             setPersons(persons.filter(p => p.id !== personToUpdate.id))    
           })
 
@@ -66,6 +77,8 @@ const App = () => {
       .create(personObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNotificationMessage({message: `Added '${returnedPerson.name}'`, type: notificationType.success})
+        setTimeout(() => {setNotificationMessage({message: null})}, 5000)
         setNewName('')
         setNewNumber('')
       })
@@ -110,12 +123,13 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification notificationMessage={notificationMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h2>Add New Person</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} 
         newNumber={newNumber} handleNumberChange={handleNumberChange} isADigit={isADigit} />
       <h2>Numbers</h2> 
-      <Persons PersonsToShow={PersonsToShow} setPersons={setPersons}/>
+      <Persons PersonsToShow={PersonsToShow} setPersons={setPersons} setNotificationMessage={setNotificationMessage} />
     </div>
   )
 }
