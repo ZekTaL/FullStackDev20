@@ -74,10 +74,6 @@ const App = () => {
       })
   }
 
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
-  }
-
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
@@ -130,7 +126,7 @@ const App = () => {
     <form onSubmit={addNote}>
       <input
         value={newNote}
-        onChange={handleNoteChange}
+        onChange={({ target }) => setNewNote(target.value)}
       />
       <button type="submit">save</button>
     </form>  
