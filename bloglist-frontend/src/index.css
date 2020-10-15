@@ -4,9 +4,30 @@ h1 {
 }
 
 .blog {
-  color: grey;
-  padding-top: 5px;
+  color: black;
   font-size: 15px;
+}
+
+.blogTable, td {
+  border: solid;
+  border-width: 2px;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.blogButton {
+  padding: 5px;
+  border: solid;
+  border-width: 2px;
+  margin-bottom: 5px;
+  vertical-align: top;
+}
+
+.deleteButton {
+  padding: 10px;
+  background: #e9e9e9;
+  border-radius: 20px;
+  border: none;
 }
 
 .error {
@@ -31,4 +52,8 @@ h1 {
 
 input {
   margin-left: 5px;
+}
+
+.inlineElements{
+  display: inline;
 }
