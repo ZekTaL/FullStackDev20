@@ -1,4 +1,4 @@
-import React, {useState} from 'react' 
+import React, { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
   const [blogTitle, setBlogTitle] = useState('')
@@ -12,10 +12,10 @@ const BlogForm = ({ createBlog }) => {
       author: blogAuthor === '' ? 'anonymous' : blogAuthor,
       url: blogUrl
     })
-    
+
     setBlogTitle('')
     setBlogAuthor('')
-    setBlogUrl('')  
+    setBlogUrl('')
   }
 
   return (
@@ -44,7 +44,7 @@ const BlogForm = ({ createBlog }) => {
           />
         </div>
         <button type="submit">CREATE</button>
-      </form>      
+      </form>
     </div>
 
   )

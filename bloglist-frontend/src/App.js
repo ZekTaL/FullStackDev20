@@ -9,9 +9,8 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notificationMessage, setNotificationMessage] = useState({message: null, type: null})
+  const [notificationMessage, setNotificationMessage] = useState({ message: null, type: null })
   const [user, setUser] = useState(null)
-  //const [highlightedBlog, setHighlightedBlog] = useState(null)
 
   const blogFormRef = useRef()
   const loginFormRef = useRef()
@@ -23,88 +22,93 @@ const App = () => {
 
   const tokenName = 'loggedToBlogApp'
 
-  useEffect(() => {    
-    const loggedUserJSON = window.localStorage.getItem(tokenName)    
-    if (loggedUserJSON) 
-    {      
-      const user = JSON.parse(loggedUserJSON)      
-      setUser(user)      
-      blogService.setToken(user.token)   
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem(tokenName)
+    if (loggedUserJSON)
+    {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
       async function getBlogList() {
         const blogs = await blogService.getAll()
         setBlogs( blogs )
       }
-      getBlogList()      
-    }  
+      getBlogList()
+    }
   }, [])
 
-  const handleLogin = async (login) => {     
+  const handleLogin = async (login) => {
 
-    try 
-    {      
-      const user = await loginService.login(login)   
-      window.localStorage.setItem(tokenName, JSON.stringify(user)) 
-      blogService.setToken(user.token)   
-      setUser(user)      
-      setNotificationMessage({message: 'Login successful', type: notificationType.success})
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000) 
+    try
+    {
+      const user = await loginService.login(login)
+      window.localStorage.setItem(tokenName, JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      setNotificationMessage({ message: 'Login successful', type: notificationType.success })
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
       const blogs = await blogService.getAll()
-      setBlogs( blogs ) 
-      blogFormRef.current.toggleVisibility() 
-    } 
-    catch (exception) 
-    {   
+      setBlogs( blogs )
+      blogFormRef.current.toggleVisibility()
+    }
+    catch (exception)
+    {
       if (exception.message.includes('code 500'))
       {
-        setNotificationMessage({message: 'Server Error', type: notificationType.error})
+        setNotificationMessage({ message: 'Server Error', type: notificationType.error })
       }
       else if (exception.message.includes('code 401'))
       {
-        setNotificationMessage({message: 'Wrong Credentials', type: notificationType.error})
+        setNotificationMessage({ message: 'Wrong Credentials', type: notificationType.error })
       }
       else
       {
-        setNotificationMessage({message: exception.message, type: notificationType.error})
+        setNotificationMessage({ message: exception.message, type: notificationType.error })
       }
-  
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000) 
+
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
     }
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem(tokenName)
     setUser(null)
-    setNotificationMessage({message: 'Logout successful', type: notificationType.success})
-    setTimeout(() => {setNotificationMessage({message: null})}, 5000) 
+    setNotificationMessage({ message: 'Logout successful', type: notificationType.success })
+    setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
   }
-  
+
   const handleCreateBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()  
+    blogFormRef.current.toggleVisibility()
     try
     {
-      const returnedBlog = await blogService.create(blogObject) 
+      const returnedBlog = await blogService.create(blogObject)
+      returnedBlog.user = {
+        name: user.name,
+        username: user.username,
+        id: returnedBlog.user
+      }
       setBlogs(blogs.concat(returnedBlog))
-      setNotificationMessage({message: 'Blog Created!', type: notificationType.success})
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000) 
+      setNotificationMessage({ message: 'Blog Created!', type: notificationType.success })
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
     }
     catch (exception)
     {
-      setNotificationMessage({message: 'Insert a valid Title and URL', type: notificationType.error})
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000)
-    }   
+      setNotificationMessage({ message: 'Insert a valid Title and URL', type: notificationType.error })
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
+    }
   }
 
   const handleUpdateLikes = async (highlightedBlog) => {
     try
     {
-      const updatedBlog = {...highlightedBlog, likes: highlightedBlog.likes+1}
+      const updatedBlog = { ...highlightedBlog, likes: highlightedBlog.likes+1 }
       await blogService.update(updatedBlog.id, updatedBlog)
       setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog))
     }
     catch (exception)
     {
-      setNotificationMessage({message: 'Failed to like the blog!', type: notificationType.error})
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000)
+      setNotificationMessage({ message: 'Failed to like the blog!', type: notificationType.error })
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
     }
   }
 
@@ -115,22 +119,22 @@ const App = () => {
       {
         await blogService.deleteBlog(highlightedBlog.id)
         setBlogs(blogs.filter(blog => blog.id !== highlightedBlog.id))
-        setNotificationMessage({message: `Deleted '${highlightedBlog.title}'`, type: 'success'})
-        setTimeout(() => {setNotificationMessage({message: null})}, 5000)
+        setNotificationMessage({ message: `Deleted '${highlightedBlog.title}'`, type: 'success' })
+        setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
       }
     }
     catch (exception)
     {
       if (exception.message.includes('code 401'))
       {
-        setNotificationMessage({message: 'Unauthorize: only the creator of the blog can delete it', type: notificationType.error})
+        setNotificationMessage({ message: 'Unauthorize: only the creator of the blog can delete it', type: notificationType.error })
       }
       else
       {
-        setNotificationMessage({message: exception.message, type: 'error'})
+        setNotificationMessage({ message: exception.message, type: 'error' })
       }
-  
-      setTimeout(() => {setNotificationMessage({message: null})}, 5000) 
+
+      setTimeout(() => {setNotificationMessage({ message: null })}, 5000)
     }
   }
 
@@ -154,7 +158,7 @@ const App = () => {
     <div>
       {blogs
         .sort((x, y) => y.likes - x.likes)
-        .map(blog => <Blog key={blog.id} blog={blog} handleUpdateLikes={handleUpdateLikes} handleDeleteBlog={handleDeleteBlog}/>)}
+        .map(blog => <Blog key={blog.id} user={user} blog={blog} handleUpdateLikes={handleUpdateLikes} handleDeleteBlog={handleDeleteBlog}/>)}
     </div>
   )
 
