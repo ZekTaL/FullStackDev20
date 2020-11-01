@@ -6,8 +6,10 @@ import Togglable from './components/Togglable'
 import NoteForm from './components/NoteForm'
 import noteService from './services/notes'
 import loginService from './services/login'
+import { createStore } from 'redux'
+import noteReducer from './reducers/noteReducer'
 
-const App = () => {
+/*const App = () => {
   const [loginVisible, setLoginVisible] = useState(false)
   const [notes, setNotes] = useState([])
   const [showAll, setShowAll] = useState(true)
@@ -158,6 +160,41 @@ const App = () => {
         {notesToShow.map((note, i) => <Note key={i} note={note} toggleImportance={() => toggleImportanceOf(note.id)} />)}
       </ul>
       <Footer />
+    </div>
+  )
+}*/
+
+
+const store = createStore(noteReducer)
+
+store.dispatch({
+  type: 'NEW_NOTE',
+  data: {
+    content: 'the app state is in redux store',
+    important: true,
+    id: 1
+  }
+})
+
+store.dispatch({
+  type: 'NEW_NOTE',
+  data: {
+    content: 'state changes are made with actions',
+    important: false,
+    id: 2
+  }
+})
+
+const App = () => {
+  return(
+    <div>
+      <ul>
+        {store.getState().map(note=>
+          <li key={note.id}>
+            {note.content} <strong>{note.important ? 'important' : ''}</strong>
+          </li>
+        )}
+        </ul>
     </div>
   )
 }
