@@ -18,4 +18,4 @@ Cypress.Commands.add('createNote', ({ content, important }) => {
     })
   
     cy.visit('http://localhost:3000')
-  })
+})

@@ -6,7 +6,7 @@ const Blog = ({ user, blog, handleUpdateLikes, handleDeleteBlog }) => (
   <table className="blogTable">
     <tbody>
       <tr>
-        <td width="55" align="center">
+        <td id="deleteButtonCell" width="55" align="center">
           {blog.user
             ? user.username === blog.user.username
               ? <button onClick={() => handleDeleteBlog(blog)}><img src="https://image.flaticon.com/icons/png/512/39/39220.png" height="30" alt="DELETE"></img></button>
@@ -22,7 +22,7 @@ const Blog = ({ user, blog, handleUpdateLikes, handleDeleteBlog }) => (
               <div>
                 {blog.url}
                 <br></br>
-                <i>Likes:</i> {blog.likes} <button onClick={() => handleUpdateLikes(blog)}>+1</button>
+                <i>Likes:</i> {blog.likes} <button id="likesButton" onClick={() => handleUpdateLikes(blog)}>+1</button>
                 <br></br>
                 <i>Posted by: </i> {blog.user ? blog.user.name : 'guest'}
               </div>

@@ -155,7 +155,7 @@ const App = () => {
   )
 
   const blogList = () => (
-    <div>
+    <div id="blogList">
       {blogs
         .sort((x, y) => y.likes - x.likes)
         .map(blog => <Blog key={blog.id} user={user} blog={blog} handleUpdateLikes={handleUpdateLikes} handleDeleteBlog={handleDeleteBlog}/>)}
@@ -170,7 +170,7 @@ const App = () => {
         <Notification notificationMessage={notificationMessage} />
         <div>
           <h3>Login to view the blogs list!</h3>
-          {loginForm()}
+          <LoginForm login={handleLogin} />
         </div>
       </div>
     )
