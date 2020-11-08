@@ -1,4 +1,4 @@
-const anecdotesAtStart = [
+/*const anecdotesAtStart = [
     'If it hurts, do it more often',
     'Adding manpower to a late software project makes it later!',
     'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
@@ -17,13 +17,16 @@ const asObject = (anecdote) => {
     }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesAtStart.map(asObject)*/
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
     switch(action.type)
     {
         case 'NEW_ANECDOTE':
             return [...state, action.data]
+
+        case 'INIT_ANECDOTES':
+            return action.data
 
         case 'VOTE':
             const id = action.data.id
@@ -41,16 +44,19 @@ const reducer = (state = initialState, action) => {
     }
 }
 
-export const createAnecdote = (content) => {  
+export const createAnecdote = (data) => {  
     return {
       type: 'NEW_ANECDOTE',
-      data: {
-        content,
-        votes: 0,
-        id: getId()
-      }
+      data
     }
 }
+
+export const initializeAnecdotes = (anecdotes) => {
+    return {
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    }
+  }
 
 export const vote = (id) => {  
     return {
