@@ -11,6 +11,8 @@ const notificationReducer = (state = '', action) => {
     }
 }
 
+let timeoutID = []
+
 export const setNotificationMessage = message => {
     return {
       type: 'SET_NOTIFICATION',
@@ -19,6 +21,7 @@ export const setNotificationMessage = message => {
 }
 
 export const hideNotificationMessage = () => {
+    timeoutID = []
     return {
         type: 'HIDE_NOTIFICATION'
     }
@@ -27,7 +30,11 @@ export const hideNotificationMessage = () => {
 export const setTimedNotification = (message, seconds) => {
     return async dispatch => {
         dispatch(setNotificationMessage(message))
-        setTimeout(() => {dispatch(hideNotificationMessage())}, seconds*1000)
+        console.log(timeoutID)
+        timeoutID.forEach(tID => {
+            clearTimeout(tID)
+        })      
+        timeoutID = [...timeoutID, setTimeout(() => {dispatch(hideNotificationMessage())}, seconds*1000)]
         dispatch({
             type: 'SET_TIMED_NOTIFICATION',
             message,
