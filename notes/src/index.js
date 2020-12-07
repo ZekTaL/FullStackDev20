@@ -1,20 +1,20 @@
-/*import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import './index.css'
-import { Provider } from 'react-redux'
-import store from './store'
-
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,  
-    document.getElementById('root')
-)
-*/
-
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
+import { Navbar, Nav } from 'react-bootstrap'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TextField,
+  Paper,
+} from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 
 import {
   BrowserRouter as Router,
@@ -26,6 +26,37 @@ import {
   useHistory,
   useRouteMatch
 } from "react-router-dom"
+
+import styled from 'styled-components'
+
+const Button = styled.button`
+  background: Bisque;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Chocolate;
+  border-radius: 3px;
+`
+
+const Input = styled.input`
+  margin: 0.25em;
+`
+
+const Page = styled.div`
+  padding: 1em;
+  background: papayawhip;
+`
+
+const Navigation = styled.div`
+  background: BurlyWood;
+  padding: 1em;
+`
+
+const Footer = styled.div`
+  background: Chocolate;
+  padding: 1em;
+  margin-top: 1em;
+`
 
 const Home = () => (
   <div> 
@@ -47,13 +78,22 @@ const Note = ({ note }) => {
 const Notes = ({notes}) => (
   <div>
     <h2>Notes</h2>
-    <ul>
-      {notes.map(note =>
-        <li key={note.id}>
-          <Link to={`/notes/${note.id}`}>{note.content}</Link>
-        </li>
-      )}
-    </ul>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map(note => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>
+                {note.user}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div>
 )
 
@@ -79,15 +119,21 @@ const Login = (props) => {
 
   return (
     <div>
-      <h2>login</h2>
+      <h2>LOGIN</h2>
       <form onSubmit={onSubmit}>
         <div>
-          username: <input />
+          Username 
+          <Input />
         </div>
         <div>
-          password: <input type='password' />
+          Password
+          <Input type="password" />
         </div>
-        <button type="submit">login</button>
+        <div>
+          <Button type="submit" primary=''>
+            login
+          </Button>
+        </div>
       </form>
     </div>
   )
@@ -116,8 +162,13 @@ const App = () => {
   ])
 
   const [user, setUser] = useState(null) 
+  const [message, setMessage] = useState(null)
 
-  const login = (user) => { setUser(user)}
+  const login = (user) => { 
+    setUser(user)
+    setMessage(`welcome ${user}`)    
+    setTimeout(() => {setMessage(null)}, 10000)
+  }
 
   const padding = { padding: 5 }
 
@@ -127,8 +178,8 @@ const App = () => {
     : null
 
   return (
-    <div>
-      <div>
+    <Page>
+      <Navigation>
         <Link style={padding} to="/">home</Link>
         <Link style={padding} to="/notes">notes</Link>
         <Link style={padding} to="/users">users</Link>
@@ -136,8 +187,8 @@ const App = () => {
           ? <em>{user} logged in</em>
           : <Link style={padding} to="/login">login</Link>
         }
-      </div>
-
+      </Navigation>
+      
       <Switch>
         <Route path="/notes/:id">
           <Note note={note} />
@@ -154,13 +205,12 @@ const App = () => {
         <Route path="/">
           <Home />
         </Route>
-      </Switch>  
-        
-      <div>
-        <br />
+      </Switch>
+      
+      <Footer>        
         <em>Note app, Department of Computer Science 2020</em>
-      </div>
-    </div>
+      </Footer>
+    </Page>
   )
 }
 
