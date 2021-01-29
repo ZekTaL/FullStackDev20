@@ -1,18 +1,19 @@
-h1 {
-  color: dodgerblue;
-  font-style: italic;
-}
-
 .blog {
   color: black;
-  font-size: 15px;
+  font-size: 20px;
+  padding: 5px;
 }
 
-.blogTable, td {
+.blogTable {
   border: solid;
   border-width: 2px;
   border-collapse: collapse;
   padding: 10px;
+}
+
+.userTable {
+  border: solid;
+  padding: 5px;
 }
 
 .blogButton {
@@ -32,6 +33,16 @@ h1 {
 
 .error {
   color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.info {
+  color: dimgray;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;

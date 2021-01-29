@@ -1,55 +1,59 @@
-import React, { useState } from 'react'
-//import PropTypes from 'prop-types'
+import React from 'react'
+import {connect} from 'react-redux'
+import {login} from '../reducers/loginReducer'
+import {setTimedNotification} from '../reducers/notificationReducer'
+import {Form, Button, Col} from 'react-bootstrap'
 
-const LoginForm = ({ login }) => {
+const LoginForm = (props) => {
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
+    const username = event.target.username.value
+    const password = event.target.password.value
     console.log('logging in with', username, password)
-    login({
+    props.login({
       username: username,
       password: password
     })
 
-    setUsername('')
-    setPassword('')
+    props.setTimedNotification(`Logged in '${username}'`, 3)
+
+    event.target.username.value = ''
+    event.target.password.value = ''
+
   }
 
   return (
     <div>
-      <form id="loginForm" onSubmit={handleLogin}>
-        <div>
-          Username
-          <input
-            id="username"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          Password
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id="loginButton" type="submit">LOGIN</button>
-      </form>
+      <br />
+      <Form id="loginForm" onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Row>
+            <Form.Label column="lg" lg={1}>Username</Form.Label>
+            <Col xs={3}>
+              <Form.Control type="text" name="username" size="lg"/>
+            </Col>
+          </Form.Row>
+          <Form.Row>
+            <Form.Label column="lg" lg={1}>Password</Form.Label>
+            <Col xs={3}>
+              <Form.Control type="password" name="password" size="lg"/>
+            </Col>
+          </Form.Row>
+          <br />
+          <Form.Row>
+            <Col>
+             <Button type="submit" variant="primary">LOGIN</Button>
+            </Col>
+          </Form.Row>         
+        </Form.Group>
+      </Form>
     </div>
   )
 }
 
 LoginForm.displayName = 'LoginForm'
 
-/*LoginForm.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
-} */
+const mapDispatchToProps = { login, setTimedNotification }
 
-export default LoginForm
+export default connect(null, mapDispatchToProps)(LoginForm)
