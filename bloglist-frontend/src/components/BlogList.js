@@ -76,7 +76,7 @@ const BlogView = ({blog, handleUpdateLikes, addComment}) => {
             </Form>  
             
             <ListGroup>
-              {blog.comments.length === 0 ? 'Nessun commento' : blog.comments.map((blogComment, idx) => <ListGroup.Item key={idx}>{blogComment}</ListGroup.Item> )} 
+              {blog.comments.length === 0 ? 'No comments' : blog.comments.map((blogComment, idx) => <ListGroup.Item key={idx}>{blogComment}</ListGroup.Item> )} 
             </ListGroup>
           </Card.Body>
       </Card>
