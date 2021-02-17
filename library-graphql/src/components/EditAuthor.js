@@ -39,7 +39,7 @@ const EditAuthor = (props) => {
       <form onSubmit={submit}>
         <div>
           name <select id="selectAuthor">
-            {authors.map(author => <option value={author.name}>{author.name}</option> )}
+            {authors.map(author => <option key={author.name} value={author.name}>{author.name}</option> )}
           </select>
         </div>
         <div>
