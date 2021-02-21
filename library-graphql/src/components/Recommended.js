@@ -43,7 +43,7 @@ const Recommended = (props) => {
               {booksToShow.map(a =>
                 <tr key={a.title}>
                   <td>{a.title}</td>
-                  <td>{a.author.name}</td>
+                  <td>{a.author}</td>
                   <td>{a.published}</td>
                 </tr>
               )}
