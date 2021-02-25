@@ -3,7 +3,7 @@ interface BMIValues {
     weight: number;
 }
   
-const parseArguments = (args: Array<string>): BMIValues => {
+export const parseArguments = (args: Array<string>): BMIValues => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 4) throw new Error('Too many arguments');
 
@@ -17,21 +17,23 @@ const parseArguments = (args: Array<string>): BMIValues => {
     }
 }
 
-const calculateBMI = (height: number, weight: number, resultMessage: string) => {
+export const calculateBMI = (height: number, weight: number, resultMessage: string): string|undefined => {
     const bmi = weight / Math.pow((height/100), 2);
     if (bmi < 18.5) 
-        console.log(resultMessage, `${bmi} - Underweight`);
+        return resultMessage + `${bmi} - Underweight`;
     else if (bmi >= 18.5 && bmi < 25)
-        console.log(resultMessage, `${bmi} - Normal`);
+        return resultMessage + `${bmi} - Normal`;
     else if (bmi >= 25 && bmi < 30)
-        console.log(resultMessage, `${bmi} - Overweight`);
+        return resultMessage + `${bmi} - Overweight`;
     else if (bmi >= 30)
-        console.log(resultMessage, `${bmi} - Obese`);
+        return resultMessage + `${bmi} - Obese`;
+
+    return '';
 }
 
 try {
     const { height, weight } = parseArguments(process.argv);
-    calculateBMI(height, weight, `Height: ${height}cm, Weight: ${weight}kg ==> BMI:`);
+    calculateBMI(height, weight, `Height: ${height}cm, Weight: ${weight}kg => BMI:`);
 } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
 }

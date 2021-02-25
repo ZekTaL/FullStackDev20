@@ -38,12 +38,16 @@ const calculateExercises = (data: Array<number>): Result => {
         if (gap > 0.5) return 1;
         if (gap <= 0.5 && gap >= -0.5) return 2
         if (gap < -0.5) return 3;
+        // it should never come here
+        return 2;
     }
     const ratingDescription = () => {
         switch(rating()) {
-            case 1: return "good job!"
-            case 2: return "you can do better!"
-            case 3: return "not good enough!"
+            case 1: return "good job!";
+            case 2: return "you can do better!";
+            case 3: return "not good enough!";
+            // should never be default
+            default: return "";
         }
     }
 
