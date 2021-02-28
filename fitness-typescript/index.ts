@@ -31,12 +31,19 @@ app.post('/exercises', (req, res) => {
 
   const body = req.body;
   const bodyParams = [body.target, ...body.daily_exercises];
+  if (bodyParams.length < 2)
+  {
+    res.json({error: 'parameter missing'});
+  }
+  // check params
+  bodyParams.forEach((el) => {
+    if (isNaN(Number(el))) {
+      res.json({error: 'Provided values were not numbers!'});
+    }
+  });
+
   const result: Result = calculateExercises(bodyParams);
-
   res.json(result);
-
-
-
 });
 
 const PORT = 3003;

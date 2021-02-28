@@ -8,7 +8,7 @@ export interface Result {
     ratingDescription: string;
 }
 
-const parseExerciseArguments = (args: Array<string>): Array<number> => {
+export const parseExerciseArguments = (args: Array<string>): Array<number> => {
     if (args.length < 4) throw new Error('Not enough arguments');
 
     let data: Array<number> = new Array<number>();
